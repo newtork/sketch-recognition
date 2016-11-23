@@ -1,3 +1,15 @@
+## Illustration
+
+![Explanation so far](https://raw.githubusercontent.com/newtork/sketch-recognition/master/01-userinput-canvas/canvas-input.png)
+
+*red:* user drawn path
+
+*blue:* delayed projection at every node of path
+
+(*turquoise:* distance between nodes)
+
+--- 
+
 ## Notes
 
 Consideration:
@@ -16,7 +28,7 @@ History:
   * faster and easier algorithm
   * complexity linear to dimension
  * Just calculate average node
-  * substitude dedicated computation for **average progression vector**
+  * substitude dedicated computation of **average progression vector**
   * use difference of *current* and *previous* **average node**
 
 ---
