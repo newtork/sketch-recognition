@@ -16,7 +16,7 @@ A simple list to keep myself reminded.
 
 *red:* user drawn path
 
-*blue:* projected direction at every node of path
+*blue:* delayed projection at every node of path
 
 (*turquoise:* distance between nodes)
 
