@@ -32,7 +32,7 @@ var VectorFunctions = {
 	
 	angularVelocity : function(v1, v2, angle) {
 		var l=this.length(this.difference(v1,v2));
-		return angle*l;
+		return angle/l;
 	},
 	
 	angleBetween : function(m1, m2) {

@@ -37,7 +37,7 @@ function feedbackAreaInitialization() {
 	return {
 		point : function(x,y) {
 			walkVec.add([x,y]);
-			var alpha = walkVec.getAngle();
+			var alpha = walkVec.getAngleVelocity();
 			
 			if(progressionHandler) {
 				var direction = walkVec.getDirection();
@@ -46,7 +46,7 @@ function feedbackAreaInitialization() {
 			}
 			
 			if(isNumeric(alpha)) {	
-				var theAngle = alpha/3000;
+				var theAngle = alpha/50;
 				var drawThis = element.height*(0.5+walkVec.Resolution*theAngle/2);
 				var drawFrom = !drawLast && drawLast!==0 && drawThis || drawLast;
 

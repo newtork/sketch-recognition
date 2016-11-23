@@ -42,6 +42,7 @@ var WalkingVector  = function(parameters) {
 	// temp vars
 	var directionPrev;
 	var anglePrev;
+	var angleVelocity;
 	var recordPrev;
 	var signPrev=1;
 	var quadrantPrev;
@@ -87,9 +88,9 @@ var WalkingVector  = function(parameters) {
 	// function to calculate leading sign of angle, whether clockwise or counter-clockwise
 	function calcSign(directionThis) {
 		var QUADRANT_DEBUG = false;
-		var l = QUADRANT_DEBUG && function(s) { console.log(s, quadrant, quadrantPrev); return true; } || function() { return true; }
+		var l = QUADRANT_DEBUG && function(s) { console.log(s, directionThis, quadrantPrev); return true; } || function() { return true; }
 		
-		var signThis = 1;
+		var signThis = -1;
 		
 		// determine current quadrant of the current direction vector
 		var quadrant = directionThis[0]>=0 && directionThis[1]>=0 && l(1) && 1
@@ -118,12 +119,12 @@ var WalkingVector  = function(parameters) {
 			var directionThis = VectorFunctions.difference(averageThis, averagePrev||averageThis);
 			
 			if(counter > 0) {
-				// calculate angle between last direction vector and current direction vector
-				var angleThis = VectorFunctions.angleBetween(directionThis, directionPrev);
-				
-				// make the angle distance-weighted and determine sign
-				anglePrev = VectorFunctions.angularVelocity(vector, recordPrev, angleThis);
+				// calculate angle and sign between last direction vector and current direction vector
+				anglePrev = VectorFunctions.angleBetween(directionThis, directionPrev);
 				anglePrev *= calcSign(directionThis);
+				
+				// make the angle distance-weighted
+				angleVelocity = VectorFunctions.angularVelocity(vector, recordPrev, anglePrev);
 			}
 			
 			// copy vectors
@@ -142,6 +143,8 @@ var WalkingVector  = function(parameters) {
 			directionPrev = null;
 			averagePrev = null;
 			anglePrev = null;
+			angleVelocity = null;
+			recordPrev = null;
 			quadrantPrev = null;
 			signPrev = 1;
 			indexCurrent = counter = 0;
@@ -149,6 +152,10 @@ var WalkingVector  = function(parameters) {
 		
 		getAngle : function() {
 			return anglePrev;
+		},
+		
+		getAngleVelocity : function() {
+			return angleVelocity;
 		},
 		
 		getDirection : function() {
