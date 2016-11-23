@@ -1,0 +1,173 @@
+<html>
+<head>
+	<script src="vectors.js"></script>
+	<script src="walkingvector.js"></script>
+</head>
+<body>
+
+
+
+<canvas id="canvas" width="490" height="220" style="border:1px solid black"></canvas>
+<canvas id="angle" width="490" height="220" style="border:1px solid black"></canvas>
+
+
+<script>
+
+// TODO comments
+
+function feedbackAreaInitialization() {
+
+	var walkVec = WalkingVector({ resolution:11, dimension:2 }); // size=10
+	
+	var drawLast;
+	var counter=0;
+	var progressionHandler;
+
+	var element = document.getElementById('angle');
+	var angle = element.getContext("2d");
+	angle.strokeStyle = "#005500";
+	angle.lineJoin = "round";
+	angle.lineWidth = 1;
+		
+
+	function isNumeric(n) {
+	  return !isNaN(parseFloat(n)) && isFinite(n);
+	}
+
+	return {
+		point : function(x,y) {
+			walkVec.add([x,y]);
+			var alpha = walkVec.getAngle();
+			
+			if(progressionHandler) {
+				var direction = walkVec.getDirection();
+				if(direction)
+					progressionHandler([x,y], direction);
+			}
+			
+			if(isNumeric(alpha)) {	
+				var theAngle = alpha/3000;
+				var drawThis = element.height*(0.5+walkVec.Resolution*theAngle/2);
+				var drawFrom = !drawLast && drawLast!==0 && drawThis || drawLast;
+
+				angle.beginPath();
+				angle.moveTo((counter-1) % angle.canvas.width, drawFrom);
+				angle.lineTo((counter) % angle.canvas.width, drawThis);
+				angle.closePath();
+				angle.stroke();
+				
+				drawLast=drawThis;
+			}
+			
+			// reset visible area
+			if(counter % angle.canvas.width == 0) {
+				angle.clearRect(0, 0, angle.canvas.width, angle.canvas.height);
+				
+				drawLast = null;
+				angle.strokeStyle = "#cccccc";
+				angle.lineJoin = "round";
+				angle.lineWidth = 1;
+				angle.beginPath();
+				angle.moveTo(0, element.height/2);
+				angle.lineTo(element.width, element.height/2);
+				angle.closePath();
+				angle.stroke();
+				angle.strokeStyle = "#005500";
+			}
+			counter++;
+		},
+		
+		reset : function() {
+			walkVec.reset();
+		},
+		
+		SetProgressionHandler : function(handler) {
+			progressionHandler = handler;
+		}
+	}
+}
+
+
+
+function drawAreaInitialization(feedback) {
+	var paint = false;
+	var xPrev = null;
+	var yPrev = null;
+	var progressionLength = 20
+
+
+	var canvas  = document.getElementById('canvas');
+	var context = canvas.getContext("2d");
+	
+	
+	// canvas mouse interaction
+	{
+		canvas.onmousedown = function(e) {
+			paint = true;
+			addPoint(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+		}
+		canvas.onmousemove = function(e){
+			if(paint){
+				addPoint(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+			}
+		};
+		canvas.onmouseup = canvas.onmouseleave = function(e){
+			paint = false;
+			xPrev = yPrev = null;
+			if(feedback && feedback.reset)
+				feedback.reset();
+		};
+	}
+
+	function style()
+	{
+		context.strokeStyle = "#df4b26";
+		context.lineJoin = "round";
+		context.lineWidth = 5;
+	}
+	
+	function addPoint(x, y) {
+		style();
+		context.beginPath();
+		context.moveTo(xPrev!==null ? xPrev : x-1, yPrev!==null ? yPrev : y-1);
+		context.lineTo(x, y);
+		context.closePath();
+		context.stroke();
+		xPrev = x;
+		yPrev = y;
+	  
+		if(feedback && feedback.point)
+			feedback.point(x,y);
+	}
+
+	return {
+		handleDrawProgression : function(vec, direction){
+			var l = VectorFunctions.length(direction);
+			var trg = vec.map(function(vi,i) {
+				return vi + direction[i]*progressionLength/l;
+			});
+			context.strokeStyle = "#0000ff";
+			context.lineJoin = "round";
+			context.lineWidth = 1;
+			context.beginPath();
+			context.moveTo(vec[0], vec[1]);
+			context.lineTo(trg[0], trg[1]);
+			context.closePath();
+			context.stroke();
+		}
+	};
+}
+
+
+var feedbackArea = feedbackAreaInitialization();
+var drawArea = drawAreaInitialization(feedbackArea);
+
+feedbackArea.SetProgressionHandler(drawArea.handleDrawProgression);
+
+
+
+</script>
+
+
+</body>
+</html>
