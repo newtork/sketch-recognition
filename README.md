@@ -13,8 +13,13 @@ A simple list to keep myself reminded.
 
 ![Explanation so far](https://raw.githubusercontent.com/newtork/sketch-recognition/master/01-userinput-canvas/canvas-input.png)
 
+*red:* user drawn path
 
+*blue:* projected direction at every node of path
 
+(*turquoise:* distance between nodes)
+
+---
 
 ### Upcoming
  * Fully implement multi-dimensional featureset.
