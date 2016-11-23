@@ -9,6 +9,7 @@ A simple list to keep myself reminded.
 
 ☑ User/Web prototype for free data input
  * Make 2D drawing generally accessible to algorithms, by substituting plane/space coordinates to discrete angular information.
+ * Use the advantage of not caring about initial input rotation or continous input sampling or scale.
 
 
 ![Explanation so far](https://raw.githubusercontent.com/newtork/sketch-recognition/master/01-userinput-canvas/canvas-input.png)
