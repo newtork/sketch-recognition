@@ -1,6 +1,9 @@
 # Sketch Recognition
 *A testing ground for various sequence matching algorithms.*
 
+Please see the [demo](http://newtork.de/sketch-recognition/01-userinput-canvas/canvas.html).
+
+
 ## Milestones
 
 A simple list to keep myself reminded.
