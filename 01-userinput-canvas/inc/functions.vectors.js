@@ -10,7 +10,7 @@ var VectorFunctions = {
 	
 	length : function(v) {
 		return v.length==1
-			? v[0]
+			? Math.abs(v[0])
 			: Math.sqrt(v
 				.map(function(ai,i) { return ai*ai; })
 				.reduce(function(a,b) { return a+b; }));

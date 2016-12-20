@@ -2,7 +2,7 @@
  * @author Alexander Dümont / newtork <alexander_duemont@web.de>
  */
  
- if(!VectorFunctions) {
+if(!VectorFunctions) {
 	alert("Vector functions needed");
 }
 
